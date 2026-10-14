@@ -208,9 +208,21 @@ fieldset { border: 0; padding: 0; margin: 0; grid-column: 1 / -1; display: grid;
 .checks { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .checks label { display: flex; gap: 10px; align-items: center; font-weight: 500; font-size: 15px; padding: 10px 12px; border: 1px solid var(--rule); cursor: pointer; }
 .checks input { accent-color: var(--paint); width: 18px; height: 18px; }
+.qty { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.qty .f[hidden] { display: none; }
+.est { grid-column: 1 / -1; background: var(--asphalt); border: 2px solid var(--paint); padding: 18px 20px; }
+.est .lab { font-family: var(--mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--paint); }
+.est table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 15px; }
+.est td { padding: 5px 0; border-bottom: 1px solid var(--rule); }
+.est td:last-child { text-align: right; font-family: var(--mono); white-space: nowrap; padding-left: 12px; }
+.est .sub td { color: var(--concrete); }
+.est .tot td { border-bottom: 0; padding-top: 10px; font: 800 30px/1 var(--display); }
+.est .tot td:last-child { font-family: var(--display); color: var(--paint); }
+.est .empty { color: var(--muted); margin-top: 8px; }
+.est .fine { color: var(--muted); font-size: 13px; margin-top: 10px; }
 .form-msg { grid-column: 1 / -1; padding: 14px 16px; border-left: 4px solid var(--paint); background: var(--asphalt); }
 @media (max-width: 880px) { .quote { grid-template-columns: 1fr; } }
-@media (max-width: 560px) { form.qf { grid-template-columns: 1fr; padding: 22px; } .checks { grid-template-columns: 1fr; } }
+@media (max-width: 560px) { form.qf, .qty { grid-template-columns: 1fr; } form.qf { padding: 22px; } .checks { grid-template-columns: 1fr; } }
 
 footer { background: var(--sealed); border-top: 1px solid var(--rule); }
 footer .wrap { padding-block: 44px; display: flex; flex-wrap: wrap; gap: 24px 48px; justify-content: space-between; align-items: end; }
@@ -404,7 +416,7 @@ footer p { color: var(--muted); font-size: 14px; }
       <div>
         <p class="eyebrow">Free estimate</p>
         <h2>Get a quote on your lot</h2>
-        <p class="lede" style="margin-top:18px">Tell us about the property and we'll set up a time to walk it. Estimates are free.</p>
+        <p class="lede" style="margin-top:18px">Check what you need and enter your numbers to see an instant price. We'll confirm it with a free site walk.</p>
         <div class="contact-card">
           <div class="item"><div class="lab">Call or text</div><div class="val">(903) 309-1609</div></div>
           <div class="item"><div class="lab">Email</div><div class="val">stuart@kaufmanholdingsllc.com</div></div>
@@ -436,6 +448,22 @@ footer p { color: var(--muted); font-size: 14px; }
             <label><input type="checkbox" id="s-ada" name="services" value="ADA"> ADA spaces &amp; signs</label>
           </div>
         </fieldset>
+        <div class="qty">
+          <div class="f" id="w-stripe" hidden><label for="q-stalls">Number of parking spaces</label><input id="q-stalls" name="spaces" type="number" min="0" inputmode="numeric" placeholder="e.g. 40"></div>
+          <div class="f" id="w-type" hidden><label for="q-type">Striping type</label>
+            <select id="q-type" name="striping_type"><option value="restripe">Restripe existing lines</option><option value="new">New layout (fresh or sealed lot)</option></select>
+          </div>
+          <div class="f" id="w-seal" hidden><label for="q-sqft">Area to seal coat (sq ft)</label><input id="q-sqft" name="seal_sqft" type="number" min="0" inputmode="numeric" placeholder="e.g. 12000"></div>
+          <div class="f" id="w-crack" hidden><label for="q-lf">Cracks to fill (linear feet)</label><input id="q-lf" name="crack_lf" type="number" min="0" inputmode="numeric" placeholder="e.g. 300"></div>
+          <div class="f" id="w-ada" hidden><label for="q-ada">ADA spaces</label><input id="q-ada" name="ada_spaces" type="number" min="0" inputmode="numeric" placeholder="e.g. 2"></div>
+        </div>
+        <div class="est" aria-live="polite">
+          <div class="lab">Your instant estimate</div>
+          <p class="empty" id="est-empty">Check a service above and enter your numbers to see a price.</p>
+          <table id="est-table" hidden><tbody id="est-rows"></tbody></table>
+          <p class="fine">Estimate only. Your final price is confirmed in writing after a free site walk.</p>
+          <input type="hidden" name="estimate" id="q-est">
+        </div>
         <div class="f full"><label for="q-msg">Anything else?</label><textarea id="q-msg" name="message" rows="4"></textarea></div>
         <div class="f full"><button class="btn" type="submit" style="justify-content:center">Request My Free Estimate</button></div>
         <p class="form-msg" id="form-msg" hidden></p>
@@ -554,6 +582,56 @@ footer p { color: var(--muted); font-size: 14px; }
   tiles.forEach(function (t) { t.addEventListener('click', function () { show(t.dataset.st); }); });
   show('MS');
 
+  // Instant estimate. Edit these prices to change what customers see.
+  var PRICES = {
+    restripe: 6.00,     // per space, repaint existing lines
+    newLayout: 15.00,   // per space, new layout
+    seal: 0.20,         // per sq ft, two coats
+    crack: 1.50,        // per linear ft, clean + hot-pour fill
+    ada: 95.00,         // per ADA space, symbol + aisle hatching
+    minimum: 350.00,    // smallest job we take
+    taxRate: 0.07       // MS sales tax
+  };
+  var money = function (n) { return '$' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','); };
+  var num = function (id) { var v = parseFloat(document.getElementById(id).value); return v > 0 ? v : 0; };
+  var svc = [['s-stripe', ['w-stripe', 'w-type']], ['s-seal', ['w-seal']], ['s-crack', ['w-crack']], ['s-ada', ['w-ada']]];
+  function estimate() {
+    svc.forEach(function (x) {
+      var on = document.getElementById(x[0]).checked;
+      x[1].forEach(function (w) { document.getElementById(w).hidden = !on; });
+    });
+    var on = function (id) { return document.getElementById(id).checked; };
+    var lines = [];
+    if (on('s-stripe') && num('q-stalls')) {
+      var isNew = document.getElementById('q-type').value === 'new', n = Math.round(num('q-stalls'));
+      lines.push([(isNew ? 'New layout, ' : 'Restripe, ') + n + ' spaces', n * (isNew ? PRICES.newLayout : PRICES.restripe)]);
+    }
+    if (on('s-seal') && num('q-sqft')) lines.push(['Seal coating, ' + Math.round(num('q-sqft')).toLocaleString() + ' sq ft', Math.round(num('q-sqft')) * PRICES.seal]);
+    if (on('s-crack') && num('q-lf')) lines.push(['Crack filling, ' + Math.round(num('q-lf')).toLocaleString() + ' lin ft', Math.round(num('q-lf')) * PRICES.crack]);
+    if (on('s-ada') && num('q-ada')) lines.push(['ADA spaces, ' + Math.round(num('q-ada')), Math.round(num('q-ada')) * PRICES.ada]);
+    var rows = document.getElementById('est-rows'), table = document.getElementById('est-table'), empty = document.getElementById('est-empty'), hid = document.getElementById('q-est');
+    rows.innerHTML = '';
+    if (!lines.length) { table.hidden = true; empty.hidden = false; hid.value = ''; return; }
+    var sub = lines.reduce(function (a, l) { return a + l[1]; }, 0);
+    if (sub < PRICES.minimum) { lines.push(['Minimum job charge adjustment', PRICES.minimum - sub]); sub = PRICES.minimum; }
+    sub = Math.round(sub * 100) / 100;
+    var tax = Math.round(sub * PRICES.taxRate * 100) / 100, total = sub + tax;
+    var add = function (label, amt, cls) {
+      var tr = document.createElement('tr'); if (cls) tr.className = cls;
+      var a = document.createElement('td'), b = document.createElement('td');
+      a.textContent = label; b.textContent = money(amt); tr.appendChild(a); tr.appendChild(b); rows.appendChild(tr);
+    };
+    lines.forEach(function (l) { add(l[0], l[1]); });
+    add('Subtotal', sub, 'sub');
+    add('Sales tax (' + Math.round(PRICES.taxRate * 1000) / 10 + '%)', tax, 'sub');
+    add('Estimated total', total, 'tot');
+    table.hidden = false; empty.hidden = true;
+    hid.value = lines.map(function (l) { return l[0] + ': ' + money(l[1]); }).join('; ') + '; Total with tax: ' + money(total);
+  }
+  document.getElementById('qf').addEventListener('input', estimate);
+  document.getElementById('qf').addEventListener('change', estimate);
+  estimate();
+
   // Quote form. Set FORM_ENDPOINT (for example a Formspree URL) on the live site to receive requests by email.
   var FORM_ENDPOINT = '';
   var form = document.getElementById('qf'), msg = document.getElementById('form-msg');
@@ -567,7 +645,7 @@ footer p { color: var(--muted); font-size: 14px; }
       msg.hidden = false; msg.textContent = 'Thanks! To lock in your free estimate, call or text (903) 309-1609 or email stuart@kaufmanholdingsllc.com and we will set up a time to walk your lot.'; return;
     }
     fetch(FORM_ENDPOINT, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } })
-      .then(function (r) { if (!r.ok) throw 0; form.reset(); msg.hidden = false; msg.textContent = 'Thanks! We received your request and will call you within one business day.'; })
+      .then(function (r) { if (!r.ok) throw 0; form.reset(); estimate(); msg.hidden = false; msg.textContent = 'Thanks! We received your request and will call you within one business day.'; })
       .catch(function () { msg.hidden = false; msg.textContent = 'That didn’t go through. Please call or text (903) 309-1609 instead.'; });
   });
   document.getElementById('yr').textContent = new Date().getFullYear();
