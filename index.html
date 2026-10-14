@@ -1,0 +1,577 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kaufman Striping &amp; Seal Coating</title>
+<meta name="description" content="Parking lot striping, asphalt seal coating, crack filling and ADA layouts across Mississippi and surrounding areas. Free on-site estimates.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: a top-down parking lot. Dark sealed asphalt bands, traffic-paint yellow lines as the only accent, stall-width rhythm for grids. */
+:root {
+  --sealed: #0e0f11;
+  --asphalt: #17191c;
+  --asphalt-2: #202327;
+  --rule: #30343a;
+  --paint: #f4c21b;        /* traffic yellow */
+  --paint-ink: #141414;
+  --white-line: #f1efe8;
+  --concrete: #b9b6ad;
+  --muted: #8d9198;
+  --ada: #2f6fd6;
+  --display: "Big Shoulders Display", "Arial Narrow", "Roboto Condensed", Impact, sans-serif;
+  --body: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --max: 1180px;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; background: var(--asphalt); color: var(--white-line);
+  font-family: var(--body); font-size: 17px; line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--paint); outline-offset: 3px; }
+.wrap {
+  max-width: var(--max); margin: 0 auto;
+  padding-left: max(20px, env(safe-area-inset-left, 0px));
+  padding-right: max(20px, env(safe-area-inset-right, 0px));
+}
+.eyebrow {
+  font-family: var(--mono); font-size: 13px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--paint); margin: 0 0 14px;
+}
+h1, h2, h3 { font-family: var(--display); text-transform: uppercase; line-height: .95; margin: 0; text-wrap: balance; letter-spacing: .01em; }
+h2 { font-size: clamp(40px, 6vw, 72px); font-weight: 900; }
+h3 { font-size: 28px; font-weight: 800; }
+p { margin: 0; }
+.lede { color: var(--concrete); max-width: 60ch; font-size: 18px; }
+
+/* Curb stop / hazard edge used as section dividers */
+.curb { height: 10px; background: repeating-linear-gradient(-45deg, var(--paint) 0 14px, var(--sealed) 14px 28px); }
+
+/* Header */
+header.top {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+  background: color-mix(in srgb, var(--sealed) 92%, transparent);
+  backdrop-filter: blur(8px); border-bottom: 1px solid var(--rule);
+}
+.top .wrap { display: flex; align-items: center; gap: 24px; padding-block: 14px; }
+.brand { display: flex; flex-direction: column; text-decoration: none; line-height: 1; }
+.brand b { font-family: var(--display); font-weight: 900; font-size: 30px; letter-spacing: .04em; }
+.brand span { font-family: var(--mono); font-size: 10.5px; letter-spacing: .2em; color: var(--paint); margin-top: 4px; }
+.brand b::after { content: ""; display: block; height: 4px; margin-top: 4px; background: repeating-linear-gradient(90deg, var(--paint) 0 22px, transparent 22px 30px); }
+nav.links { display: flex; gap: 22px; margin-left: auto; font-weight: 600; font-size: 15px; }
+nav.links a { text-decoration: none; color: var(--concrete); }
+nav.links a:hover { color: var(--white-line); }
+.btn {
+  display: inline-flex; align-items: center; gap: 10px; text-decoration: none; cursor: pointer;
+  font-family: var(--display); font-weight: 800; font-size: 20px; text-transform: uppercase; letter-spacing: .04em;
+  padding: 12px 22px; border: 2px solid var(--paint); border-radius: 2px;
+  background: var(--paint); color: var(--paint-ink); transition: transform .15s, background .15s;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn.ghost { background: transparent; color: var(--white-line); border-color: var(--white-line); }
+.btn.small { font-size: 17px; padding: 8px 16px; }
+@media (max-width: 880px) { nav.links { display: none; } .top .btn { margin-left: auto; } }
+
+/* Hero */
+.hero { background: var(--sealed); overflow: hidden; }
+.hero .wrap { display: grid; grid-template-columns: 1.05fr .95fr; gap: 48px; align-items: center; padding-block: 72px 80px; }
+.hero h1 { font-size: clamp(56px, 9vw, 124px); font-weight: 900; }
+.hero h1 em { font-style: normal; color: var(--paint); }
+.hero .lede { margin-top: 22px; }
+.hero .ctas { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 32px; }
+.phone-line { margin-top: 20px; font-family: var(--mono); font-size: 14px; color: var(--muted); }
+.phone-line strong { color: var(--white-line); font-weight: 500; user-select: all; }
+.lot { width: 100%; height: auto; display: block; max-width: 100%; }
+.lot .stripe { stroke: var(--paint); stroke-width: 4; stroke-linecap: square; }
+.lot .white { stroke: var(--white-line); }
+@media (prefers-reduced-motion: no-preference) {
+  .lot .paint { stroke-dasharray: 120; stroke-dashoffset: 120; animation: paint .45s ease-out forwards; }
+  .lot .fadein { opacity: .001; animation: fade .5s ease-out forwards; }
+  @keyframes paint { to { stroke-dashoffset: 0; } }
+  @keyframes fade { to { opacity: 1; } }
+}
+@media (max-width: 880px) { .hero .wrap { grid-template-columns: 1fr; padding-block: 48px 56px; } }
+
+/* Promise strip */
+.promise { background: var(--paint); color: var(--paint-ink); }
+.promise ul { list-style: none; margin: 0; display: grid; grid-template-columns: repeat(4, 1fr); padding-block: 18px; }
+.promise li { font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: 21px; letter-spacing: .03em; padding: 4px 18px; border-left: 3px solid var(--paint-ink); }
+.promise li:first-child { border-left: 0; padding-left: 0; }
+@media (max-width: 880px) { .promise ul { grid-template-columns: 1fr 1fr; row-gap: 10px; } .promise li:nth-child(3) { border-left: 0; padding-left: 0; } }
+@media (max-width: 420px) { .promise li { font-size: 18px; padding-inline: 10px; } }
+
+section.band { padding-block: 96px; }
+section.band.alt { background: var(--asphalt-2); }
+.head { display: grid; gap: 18px; margin-bottom: 52px; }
+
+/* Services: laid out like a row of stalls, lines between them */
+.stalls { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 4px solid var(--paint); }
+.stall { padding: 30px 28px 36px; border-right: 4px solid var(--paint); display: grid; gap: 12px; align-content: start; min-width: 0; }
+.stall:nth-child(3n+1) { border-left: 4px solid var(--paint); }
+.stall:nth-child(n+4) { border-top: 1px dashed var(--rule); }
+.stall .tag { font-family: var(--mono); font-size: 12px; letter-spacing: .1em; color: var(--muted); text-transform: uppercase; }
+.stall p { color: var(--concrete); font-size: 16px; }
+.stall ul { margin: 4px 0 0; padding-left: 18px; color: var(--concrete); font-size: 15px; }
+@media (max-width: 920px) { .stalls { grid-template-columns: 1fr 1fr; } .stall:nth-child(3n+1) { border-left: 0; } .stall:nth-child(odd) { border-left: 4px solid var(--paint); } .stall:nth-child(n+3) { border-top: 1px dashed var(--rule); } }
+@media (max-width: 600px) { .stalls { grid-template-columns: 1fr; } .stall { border-left: 4px solid var(--paint) !important; } .stall:nth-child(n+2) { border-top: 1px dashed var(--rule); } }
+
+/* Specs + ADA calculator */
+.specs { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: start; }
+.speclist { display: grid; border-top: 1px solid var(--rule); min-width: 0; }
+.specs > *, .area > *, .quote > * { min-width: 0; }
+.spec .k { min-width: 0; }
+.spec { display: grid; grid-template-columns: 130px 1fr; gap: 20px; padding: 18px 0; border-bottom: 1px solid var(--rule); align-items: baseline; }
+.spec .v { font-family: var(--display); font-weight: 900; font-size: 40px; color: var(--paint); line-height: 1; font-variant-numeric: tabular-nums; }
+.spec .k { color: var(--concrete); font-size: 16px; }
+.spec .k b { color: var(--white-line); font-weight: 600; display: block; }
+.calc { background: var(--sealed); border: 1px solid var(--rule); padding: 32px; display: grid; gap: 18px; }
+.calc label { font-weight: 600; }
+.calc .row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.calc input[type=number] {
+  width: 160px; font: 600 28px/1 var(--display); padding: 10px 14px; background: var(--asphalt); color: var(--white-line);
+  border: 2px solid var(--rule); border-radius: 2px;
+}
+.calc input:focus { border-color: var(--paint); outline: none; }
+.result { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.result div { border: 2px solid var(--ada); padding: 16px; }
+.result .n { font: 900 54px/1 var(--display); font-variant-numeric: tabular-nums; }
+.result .l { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--concrete); }
+.fine { font-size: 13px; color: var(--muted); }
+@media (max-width: 880px) { .specs { grid-template-columns: 1fr; } .spec { grid-template-columns: 100px 1fr; } .spec .v { font-size: 32px; } }
+
+/* Service area */
+.area { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: start; }
+.tilemap { display: grid; grid-template-columns: 1fr 1.25fr 1fr; grid-template-rows: auto auto auto; gap: 8px; }
+.tile {
+  font: inherit; color: var(--white-line); text-align: left; cursor: pointer;
+  background: transparent; border: 2px dashed var(--muted); padding: 16px; min-height: 110px; border-radius: 0;
+  display: flex; flex-direction: column; justify-content: space-between; transition: border-color .15s, background .15s;
+}
+.tile:hover { border-color: var(--white-line); }
+.tile .ab { font: 900 44px/1 var(--display); }
+.tile .nm { font-family: var(--mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--concrete); }
+.tile[aria-pressed="true"] { border-style: solid; border-color: var(--paint); background: color-mix(in srgb, var(--paint) 12%, transparent); }
+.tile.home { background: var(--paint); color: var(--paint-ink); border: 2px solid var(--paint); min-height: 200px; }
+.tile.home .nm { color: var(--paint-ink); }
+.tile.home[aria-pressed="true"] { box-shadow: 0 0 0 4px var(--sealed), 0 0 0 7px var(--paint); background: var(--paint); }
+.t-ar { grid-column: 1; grid-row: 1; }
+.t-tn { grid-column: 2 / 4; grid-row: 1; }
+.t-la { grid-column: 1; grid-row: 2; }
+.t-ms { grid-column: 2; grid-row: 2; }
+.t-al { grid-column: 3; grid-row: 2; }
+.gulf { grid-column: 1 / 4; grid-row: 3; font-family: var(--mono); font-size: 12px; letter-spacing: .3em; text-transform: uppercase; color: var(--muted); text-align: center; padding: 10px; border-top: 2px solid var(--ada); }
+.cities h3 { margin-bottom: 6px; }
+.cities .sub { color: var(--muted); font-size: 15px; margin-bottom: 18px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 0; }
+.chips li { border: 1px solid var(--rule); background: var(--asphalt); padding: 6px 12px; font-size: 15px; font-weight: 500; }
+.area-note { margin-top: 22px; color: var(--concrete); }
+
+/* Who we serve */
+.serve { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border-left: 1px solid var(--rule); }
+.serve div { border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 22px 20px; font-family: var(--display); font-weight: 800; font-size: 24px; text-transform: uppercase; }
+.serve div:nth-child(-n+4) { border-top: 1px solid var(--rule); }
+@media (max-width: 880px) { .area { grid-template-columns: 1fr; } .serve { grid-template-columns: 1fr 1fr; } .serve div:nth-child(-n+4) { border-top: 0; } .serve div:nth-child(-n+2) { border-top: 1px solid var(--rule); } }
+
+/* Process: a real sequence, numbered like stall numbers */
+.steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; }
+.steps li { padding: 0 20px 0 0; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.steps .num { font: 900 64px/1 var(--display); color: transparent; -webkit-text-stroke: 2px var(--white-line); }
+.steps li:first-child .num { -webkit-text-stroke-color: var(--paint); }
+.steps h3 { font-size: 24px; }
+.steps p { color: var(--concrete); font-size: 15px; }
+@media (max-width: 920px) { .steps { grid-template-columns: 1fr 1fr; row-gap: 32px; } }
+@media (max-width: 520px) { .steps { grid-template-columns: 1fr; } }
+
+/* Quote */
+.quote { display: grid; grid-template-columns: .9fr 1.1fr; gap: 56px; align-items: start; }
+.contact-card { display: grid; gap: 18px; margin-top: 30px; }
+.contact-card .item { border-left: 4px solid var(--paint); padding-left: 16px; }
+.contact-card .lab { font-family: var(--mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.contact-card .val { font-family: var(--display); font-size: 30px; font-weight: 800; user-select: all; overflow-wrap: anywhere; }
+form.qf { background: var(--sealed); border: 1px solid var(--rule); padding: 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.f { display: grid; gap: 6px; min-width: 0; }
+.f.full { grid-column: 1 / -1; }
+.f label, fieldset legend { font-weight: 600; font-size: 14px; }
+.f input, .f select, .f textarea {
+  font: 16px var(--body); color: var(--white-line); background: var(--asphalt);
+  border: 2px solid var(--rule); border-radius: 2px; padding: 11px 12px; width: 100%;
+}
+.f input:focus, .f select:focus, .f textarea:focus { border-color: var(--paint); outline: none; }
+fieldset { border: 0; padding: 0; margin: 0; grid-column: 1 / -1; display: grid; gap: 10px; }
+.checks { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.checks label { display: flex; gap: 10px; align-items: center; font-weight: 500; font-size: 15px; padding: 10px 12px; border: 1px solid var(--rule); cursor: pointer; }
+.checks input { accent-color: var(--paint); width: 18px; height: 18px; }
+.form-msg { grid-column: 1 / -1; padding: 14px 16px; border-left: 4px solid var(--paint); background: var(--asphalt); }
+@media (max-width: 880px) { .quote { grid-template-columns: 1fr; } }
+@media (max-width: 560px) { form.qf { grid-template-columns: 1fr; padding: 22px; } .checks { grid-template-columns: 1fr; } }
+
+footer { background: var(--sealed); border-top: 1px solid var(--rule); }
+footer .wrap { padding-block: 44px; display: flex; flex-wrap: wrap; gap: 24px 48px; justify-content: space-between; align-items: end; }
+footer p { color: var(--muted); font-size: 14px; }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Kaufman Striping and Seal Coating, home">
+      <b>KAUFMAN</b>
+      <span>STRIPING &amp; SEAL COATING</span>
+    </a>
+    <nav class="links" aria-label="Main">
+      <a href="#services">Services</a>
+      <a href="#specs">ADA &amp; Specs</a>
+      <a href="#area">Service Area</a>
+      <a href="#process">How It Works</a>
+    </nav>
+    <a class="btn small" href="#quote">Free Quote</a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">Parking lot striping · Asphalt seal coating</p>
+        <h1>Sharp lines.<br>Sealed lots.<br><em>All over Mississippi.</em></h1>
+        <p class="lede">Based in Hattiesburg, we restripe, seal and protect parking lots for businesses, churches, apartments and property managers across Mississippi and the neighboring states. Clean layouts, ADA-ready spaces, and work scheduled around your hours.</p>
+        <div class="ctas">
+          <a class="btn" href="#quote">Get a Free Estimate</a>
+          <a class="btn ghost" href="#services">See Services</a>
+        </div>
+        <p class="phone-line">Call or text <strong>(903) 309-1609</strong></p>
+      </div>
+      <svg class="lot" id="lot" viewBox="0 0 560 430" role="img" aria-label="Top-down drawing of a freshly sealed and striped parking lot with an accessible van space">
+        <rect x="0" y="0" width="560" height="430" fill="#0e0f11"/>
+      </svg>
+    </div>
+  </section>
+
+  <div class="promise">
+    <ul class="wrap">
+      <li>Free on-site estimates</li>
+      <li>Night &amp; weekend work</li>
+      <li>ADA-compliant layouts</li>
+      <li>MS · LA · AL · TN · AR</li>
+    </ul>
+  </div>
+
+  <section class="band" id="services">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">What we do</p>
+        <h2>Services</h2>
+        <p class="lede">One crew for the whole lot, from the first crack to the last stencil.</p>
+      </div>
+      <div class="stalls">
+        <article class="stall">
+          <span class="tag">Stall 01</span>
+          <h3>Parking Lot Striping</h3>
+          <p>New layouts and restriping with traffic paint that stays bright. Straight, measured lines on every stall.</p>
+        </article>
+        <article class="stall">
+          <span class="tag">Stall 02</span>
+          <h3>Asphalt Seal Coating</h3>
+          <p>A protective coat that blocks water, UV and oil, restores that deep black finish, and adds years to your pavement.</p>
+        </article>
+        <article class="stall">
+          <span class="tag">Stall 03</span>
+          <h3>Crack Filling</h3>
+          <p>Hot-pour crack sealing stops water before it reaches the base and turns small cracks into potholes.</p>
+        </article>
+        <article class="stall">
+          <span class="tag">Stall 04</span>
+          <h3>ADA Compliance</h3>
+          <p>Accessible stalls, van aisles, symbols and sign placement laid out to current ADA standards.</p>
+        </article>
+        <article class="stall">
+          <span class="tag">Stall 05</span>
+          <h3>Markings &amp; Stencils</h3>
+          <ul>
+            <li>Directional arrows and stop bars</li>
+            <li>Fire lanes and curb painting</li>
+            <li>Crosswalks and stall numbers</li>
+            <li>Reserved and custom stencils</li>
+          </ul>
+        </article>
+        <article class="stall">
+          <span class="tag">Stall 06</span>
+          <h3>Layout &amp; Maintenance Plans</h3>
+          <p>Redesign a lot to fit more spaces, or set up a seal-and-restripe schedule so you never have to think about it.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <div class="curb" aria-hidden="true"></div>
+
+  <section class="band alt" id="specs">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">Built to spec</p>
+        <h2>The numbers behind a good lot</h2>
+      </div>
+      <div class="specs">
+        <div class="speclist">
+          <div class="spec"><span class="v">4&Prime;</span><span class="k"><b>Standard line width</b>The width used for parking stall lines on most commercial lots.</span></div>
+          <div class="spec"><span class="v">9&times;18</span><span class="k"><b>Typical stall, in feet</b>A common standard size. We confirm against your city's code before we paint.</span></div>
+          <div class="spec"><span class="v">96&Prime;</span><span class="k"><b>Van-accessible aisle</b>A van space needs an 8-foot access aisle beside it (or an 11-foot space with a 5-foot aisle).</span></div>
+          <div class="spec"><span class="v">2&ndash;3</span><span class="k"><b>Years between seal coats</b>The usual interval for a lot with regular traffic in the Southern heat.</span></div>
+          <div class="spec"><span class="v">24<small style="font-size:.5em">HR</small></span><span class="k"><b>Typical time before traffic</b>Seal coat usually cures overnight in warm, dry weather, so most lots reopen the next day.</span></div>
+        </div>
+        <div class="calc" aria-labelledby="calc-title">
+          <h3 id="calc-title">How many accessible spaces do you need?</h3>
+          <label for="total">Total parking spaces on your lot</label>
+          <div class="row">
+            <input id="total" type="number" min="1" max="5000" value="80" inputmode="numeric">
+          </div>
+          <div class="result" aria-live="polite">
+            <div><div class="n" id="acc">4</div><div class="l">Accessible spaces</div></div>
+            <div><div class="n" id="van">1</div><div class="l">Of those, van-accessible</div></div>
+          </div>
+          <p class="fine">Based on the 2010 ADA Standards, Table 208.2 (one van space for every six accessible spaces). Medical and other special facilities can require more. We check your lot on our walk-through.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="area">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">Where we work</p>
+        <h2>Mississippi and every state that touches it</h2>
+        <p class="lede">Based in Hattiesburg, we work all over Mississippi and take jobs across the state line in Louisiana, Alabama, Tennessee and Arkansas. Tap a state to see the areas we cover.</p>
+      </div>
+      <div class="area">
+        <div class="tilemap" role="group" aria-label="Service area by state">
+          <button class="tile t-ar" data-st="AR" aria-pressed="false"><span class="ab">AR</span><span class="nm">Arkansas</span></button>
+          <button class="tile t-tn" data-st="TN" aria-pressed="false"><span class="ab">TN</span><span class="nm">Tennessee</span></button>
+          <button class="tile t-la" data-st="LA" aria-pressed="false"><span class="ab">LA</span><span class="nm">Louisiana</span></button>
+          <button class="tile home t-ms" data-st="MS" aria-pressed="true"><span class="ab">MS</span><span class="nm">Home base · Hattiesburg</span></button>
+          <button class="tile t-al" data-st="AL" aria-pressed="false"><span class="ab">AL</span><span class="nm">Alabama</span></button>
+          <div class="gulf" aria-hidden="true">Gulf of Mexico</div>
+        </div>
+        <div class="cities">
+          <h3 id="city-title">Mississippi</h3>
+          <p class="sub" id="city-sub">Statewide, including</p>
+          <ul class="chips" id="city-list"></ul>
+          <p class="area-note">Don't see your town? If it's in the region, we'll come to you. Ask for a quote.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band alt">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">Who we serve</p>
+        <h2>If it has a parking lot, we can make it look new</h2>
+      </div>
+      <div class="serve">
+        <div>Retail centers</div><div>Churches</div><div>Apartments &amp; HOAs</div><div>Restaurants</div>
+        <div>Schools</div><div>Medical offices</div><div>Warehouses</div><div>Property managers</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="process">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">How it works</p>
+        <h2>From walk-through to open lot</h2>
+      </div>
+      <ol class="steps">
+        <li><span class="num">1</span><h3>Walk the lot</h3><p>We measure, note cracks and wear, and count your accessible spaces.</p></li>
+        <li><span class="num">2</span><h3>Written quote</h3><p>A clear, itemized price. No surprises when the job is done.</p></li>
+        <li><span class="num">3</span><h3>Schedule</h3><p>Nights, weekends or sections at a time, so your business stays open.</p></li>
+        <li><span class="num">4</span><h3>Seal &amp; stripe</h3><p>Clean, fill cracks, seal coat, then lay out and paint fresh lines.</p></li>
+        <li><span class="num">5</span><h3>Reopen</h3><p>A final walk-through with you, then the cones come up.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <div class="curb" aria-hidden="true"></div>
+
+  <section class="band alt" id="quote">
+    <div class="wrap quote">
+      <div>
+        <p class="eyebrow">Free estimate</p>
+        <h2>Get a quote on your lot</h2>
+        <p class="lede" style="margin-top:18px">Tell us about the property and we'll set up a time to walk it. Estimates are free.</p>
+        <div class="contact-card">
+          <div class="item"><div class="lab">Call or text</div><div class="val">(903) 309-1609</div></div>
+          <div class="item"><div class="lab">Email</div><div class="val">stuart@kaufmanholdingsllc.com</div></div>
+          <div class="item"><div class="lab">Home base</div><div class="val">Hattiesburg, MS</div></div>
+          <div class="item"><div class="lab">Service area</div><div class="val">MS · LA · AL · TN · AR</div></div>
+        </div>
+      </div>
+      <form class="qf" id="qf" novalidate>
+        <div class="f"><label for="q-name">Your name</label><input id="q-name" name="name" autocomplete="name" required></div>
+        <div class="f"><label for="q-biz">Business or property</label><input id="q-biz" name="business" autocomplete="organization"></div>
+        <div class="f"><label for="q-phone">Phone</label><input id="q-phone" name="phone" type="tel" autocomplete="tel"></div>
+        <div class="f"><label for="q-email">Email</label><input id="q-email" name="email" type="email" autocomplete="email" required></div>
+        <div class="f"><label for="q-city">City and state</label><input id="q-city" name="city"></div>
+        <div class="f"><label for="q-size">Lot size</label>
+          <select id="q-size" name="size">
+            <option>Under 25 spaces</option>
+            <option>25 to 75 spaces</option>
+            <option>75 to 200 spaces</option>
+            <option>200+ spaces</option>
+            <option>Not sure</option>
+          </select>
+        </div>
+        <fieldset>
+          <legend>What do you need?</legend>
+          <div class="checks">
+            <label><input type="checkbox" id="s-stripe" name="services" value="Striping"> Striping or restriping</label>
+            <label><input type="checkbox" id="s-seal" name="services" value="Seal coating"> Seal coating</label>
+            <label><input type="checkbox" id="s-crack" name="services" value="Crack filling"> Crack filling</label>
+            <label><input type="checkbox" id="s-ada" name="services" value="ADA"> ADA spaces &amp; signs</label>
+          </div>
+        </fieldset>
+        <div class="f full"><label for="q-msg">Anything else?</label><textarea id="q-msg" name="message" rows="4"></textarea></div>
+        <div class="f full"><button class="btn" type="submit" style="justify-content:center">Request My Free Estimate</button></div>
+        <p class="form-msg" id="form-msg" hidden></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <a class="brand" href="#top"><b>KAUFMAN</b><span>STRIPING &amp; SEAL COATING</span></a>
+    </div>
+    <p>A Kaufman Holdings, LLC company · Based in Hattiesburg, MS · Serving Mississippi, Louisiana, Alabama, Tennessee and Arkansas<br>&copy; <span id="yr">2026</span> Kaufman Holdings, LLC. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  // Hero: a top-down lot drawn to scale (6px = 1ft). 9ft x 18ft stalls, 24ft drive aisle.
+  var svg = document.getElementById('lot');
+  var NS = 'http://www.w3.org/2000/svg';
+  function el(tag, attrs) { var e = document.createElementNS(NS, tag); for (var k in attrs) e.setAttribute(k, attrs[k]); svg.appendChild(e); return e; }
+  var ft = 6, stallW = 9 * ft, stallD = 18 * ft, x0 = 26, topY = 26, aisle = 24 * ft;
+  var botY = topY + stallD + aisle;
+  var delay = 0.2;
+  function line(x1, y1, x2, y2, cls) {
+    var l = el('line', { x1: x1, y1: y1, x2: x2, y2: y2, 'class': 'stripe paint ' + (cls || '') });
+    l.style.animationDelay = delay.toFixed(2) + 's'; delay += 0.07;
+  }
+  // subtle sealed texture
+  for (var i = 0; i < 140; i++) {
+    el('circle', { cx: (Math.sin(i * 12.9898) * 43758.5453 % 1 + 1) % 1 * 560, cy: (Math.sin(i * 78.233) * 12543.21 % 1 + 1) % 1 * 430, r: 0.9, fill: '#24272b' });
+  }
+  // top row stalls (accessible van space at the left: 11ft stall + 5ft aisle in blue)
+  var adaW = 11 * ft, adaAisle = 5 * ft;
+  el('rect', { x: x0, y: topY, width: adaW, height: stallD, fill: '#2f6fd6', opacity: .18, 'class': 'fadein', style: 'animation-delay:1.9s' });
+  var defs = el('defs', {});
+  var pat = document.createElementNS(NS, 'pattern');
+  [['id', 'hatch'], ['width', 10], ['height', 10], ['patternUnits', 'userSpaceOnUse'], ['patternTransform', 'rotate(45)']].forEach(function (a) { pat.setAttribute(a[0], a[1]); });
+  var pl = document.createElementNS(NS, 'line');
+  [['x1', 0], ['y1', 0], ['x2', 0], ['y2', 10], ['stroke', '#2f6fd6'], ['stroke-width', 4]].forEach(function (a) { pl.setAttribute(a[0], a[1]); });
+  pat.appendChild(pl); defs.appendChild(pat);
+  el('rect', { x: x0 + adaW + 3, y: topY, width: adaAisle - 6, height: stallD, fill: 'url(#hatch)', 'class': 'fadein', style: 'animation-delay:2s' });
+  var x = x0;
+  line(x, topY, x, topY + stallD);
+  x += adaW; line(x, topY, x, topY + stallD, 'ada');
+  x += adaAisle; line(x, topY, x, topY + stallD);
+  while (x + stallW <= 540) { x += stallW; line(x, topY, x, topY + stallD); }
+  // simple accessibility symbol in the blue stall
+  var cx = x0 + adaW / 2, cy = topY + stallD / 2 + 6;
+  var g = document.createElementNS(NS, 'g'); g.setAttribute('class', 'fadein'); g.style.animationDelay = '2.1s'; svg.appendChild(g);
+  [['circle', { cx: cx + 2, cy: cy - 22, r: 5, fill: '#f1efe8' }],
+   ['path', { d: 'M' + (cx) + ' ' + (cy - 14) + ' l2 16 h14 l6 14', stroke: '#f1efe8', 'stroke-width': 4, fill: 'none', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }],
+   ['path', { d: 'M' + (cx - 6) + ' ' + (cy - 4) + ' a14 14 0 1 0 20 16', stroke: '#f1efe8', 'stroke-width': 4, fill: 'none', 'stroke-linecap': 'round' }]
+  ].forEach(function (s) { var e = document.createElementNS(NS, s[0]); for (var k in s[1]) e.setAttribute(k, s[1][k]); g.appendChild(e); });
+  var van = el('text', { x: cx, y: topY + stallD - 10, 'text-anchor': 'middle', fill: '#f1efe8', 'font-family': 'IBM Plex Mono, monospace', 'font-size': 11, 'letter-spacing': 2, 'class': 'fadein', style: 'animation-delay:2.1s' });
+  van.textContent = 'VAN';
+  // bottom row stalls
+  x = x0; line(x, botY, x, botY + stallD);
+  var n = 1;
+  while (x + stallW <= 540) {
+    x += stallW; line(x, botY, x, botY + stallD);
+    var t = el('text', { x: x - stallW / 2, y: botY + stallD - 12, 'text-anchor': 'middle', fill: '#f1efe8', opacity: .55, 'font-family': 'Big Shoulders Display, sans-serif', 'font-weight': 800, 'font-size': 16, 'class': 'fadein', style: 'animation-delay:' + (delay + 0.2).toFixed(2) + 's' });
+    t.textContent = String(n++).padStart(2, '0');
+  }
+  // aisle: dashed centerline and arrows in white
+  var mid = topY + stallD + aisle / 2;
+  for (var d = 40; d < 520; d += 46) {
+    var dl = el('line', { x1: d, y1: mid, x2: d + 24, y2: mid, 'class': 'stripe white paint' });
+    dl.style.animationDelay = (delay).toFixed(2) + 's'; delay += 0.03;
+  }
+  function arrow(ax, ay, dir) {
+    var s = dir, p = 'M' + ax + ' ' + (ay - 5) + ' h' + (34 * s) + ' v-9 l' + (20 * s) + ' 14 l' + (-20 * s) + ' 14 v-9 h' + (-34 * s) + ' z';
+    el('path', { d: p, fill: '#f1efe8', 'class': 'fadein', style: 'animation-delay:' + (delay + 0.3).toFixed(2) + 's' });
+  }
+  arrow(120, mid - 34, 1); arrow(440, mid + 34, -1);
+  // scale label
+  var sl = el('text', { x: 548, y: 422, 'text-anchor': 'end', fill: '#8d9198', 'font-family': 'IBM Plex Mono, monospace', 'font-size': 10, 'letter-spacing': 1 });
+  sl.textContent = "STALLS 9' × 18' · AISLE 24'";
+
+  // ADA calculator: 2010 ADA Standards Table 208.2
+  function required(t) {
+    if (t < 1) return 0;
+    if (t <= 25) return 1; if (t <= 50) return 2; if (t <= 75) return 3; if (t <= 100) return 4;
+    if (t <= 150) return 5; if (t <= 200) return 6; if (t <= 300) return 7; if (t <= 400) return 8;
+    if (t <= 500) return 9; if (t <= 1000) return Math.ceil(t * 0.02);
+    return 20 + Math.ceil((t - 1000) / 100);
+  }
+  var total = document.getElementById('total');
+  function calc() {
+    var t = Math.max(0, Math.floor(Number(total.value) || 0));
+    var a = required(t);
+    document.getElementById('acc').textContent = a;
+    document.getElementById('van').textContent = a ? Math.ceil(a / 6) : 0;
+  }
+  total.addEventListener('input', calc); calc();
+
+  // Service area
+  var areas = {
+    MS: ['Mississippi', 'Statewide from our Hattiesburg base, including', ['Hattiesburg', 'Petal', 'Jackson', 'Madison', 'Brandon', 'Gulfport', 'Biloxi', 'Pascagoula', 'Laurel', 'Meridian', 'Tupelo', 'Southaven', 'Olive Branch', 'Oxford', 'Starkville', 'Columbus', 'Vicksburg', 'Natchez', 'Greenville', 'McComb']],
+    TN: ['Tennessee', 'West Tennessee, including', ['Memphis', 'Germantown', 'Collierville', 'Bartlett']],
+    AL: ['Alabama', 'West and South Alabama, including', ['Mobile', 'Tuscaloosa', 'Muscle Shoals', 'Demopolis']],
+    LA: ['Louisiana', 'North Shore and northeast Louisiana, including', ['Slidell', 'Covington', 'Hammond', 'Baton Rouge', 'Monroe']],
+    AR: ['Arkansas', 'East Arkansas, including', ['West Memphis', 'Helena-West Helena', 'Lake Village']]
+  };
+  var tiles = document.querySelectorAll('.tile');
+  function show(st) {
+    var a = areas[st];
+    document.getElementById('city-title').textContent = a[0];
+    document.getElementById('city-sub').textContent = a[1];
+    var ul = document.getElementById('city-list'); ul.innerHTML = '';
+    a[2].forEach(function (c) { var li = document.createElement('li'); li.textContent = c; ul.appendChild(li); });
+    tiles.forEach(function (t) { t.setAttribute('aria-pressed', t.dataset.st === st ? 'true' : 'false'); });
+  }
+  tiles.forEach(function (t) { t.addEventListener('click', function () { show(t.dataset.st); }); });
+  show('MS');
+
+  // Quote form. Set FORM_ENDPOINT (for example a Formspree URL) on the live site to receive requests by email.
+  var FORM_ENDPOINT = '';
+  var form = document.getElementById('qf'), msg = document.getElementById('form-msg');
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var name = form.querySelector('#q-name'), email = form.querySelector('#q-email');
+    if (!name.value.trim() || !/^\S+@\S+\.\S+$/.test(email.value.trim())) {
+      msg.hidden = false; msg.textContent = 'Please add your name and a valid email so we can send your estimate.'; return;
+    }
+    if (!FORM_ENDPOINT) {
+      msg.hidden = false; msg.textContent = 'Thanks! To lock in your free estimate, call or text (903) 309-1609 or email stuart@kaufmanholdingsllc.com and we will set up a time to walk your lot.'; return;
+    }
+    fetch(FORM_ENDPOINT, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } })
+      .then(function (r) { if (!r.ok) throw 0; form.reset(); msg.hidden = false; msg.textContent = 'Thanks! We received your request and will call you within one business day.'; })
+      .catch(function () { msg.hidden = false; msg.textContent = 'That didn’t go through. Please call or text (903) 309-1609 instead.'; });
+  });
+  document.getElementById('yr').textContent = new Date().getFullYear();
+})();
+</script>
+</body>
+</html>
